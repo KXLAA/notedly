@@ -1,7 +1,7 @@
-import { NewNoteArgs } from 'types/types';
+import { MutationResolvers } from '../../types/types';
 
-const Mutation = {
-  newNote: async (_, args: NewNoteArgs, { models }) => {
+const Mutation: MutationResolvers = {
+  newNote: async (_, args, { models }) => {
     return await models.Note.create({
       content: args.content,
       author: `Adam Scott`,

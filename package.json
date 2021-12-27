@@ -1,10 +1,9 @@
 {
-  "name": "typescript-nextjs-starter",
-  "description": "A TypeScript starter for Next.js that includes all you need to build amazing projects",
+  "name": "Notedly",
+  "description": "Notedly",
   "version": "1.0.0",
   "private": true,
-  "author": "João Pedro Schmitz <hey@joaopedro.dev> (@jpedroschmitz)",
-  "license": "MIT",
+  "author": "Kola",
   "keywords": [
     "nextjs",
     "starter",
@@ -18,7 +17,8 @@
     "lint": "eslint --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\"",
     "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\" --write",
     "postinstall": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "generate": "graphql-codegen"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.5.6",
+    "@graphql-codegen/typescript-resolvers": "2.4.2",
     "apollo-server-micro": "3.5.0",
     "graphql": "16.2.0",
     "graphql-scalars": "1.14.1",

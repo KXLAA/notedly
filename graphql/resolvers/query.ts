@@ -1,10 +1,10 @@
-import { NoteArgs } from 'types/types';
+import { QueryResolvers } from '../../types/types';
 
-const Query = {
+const Query: QueryResolvers = {
   notes: async (_, __, { models }) => {
     return await models.Note.find({});
   },
-  note: async (_, args: NoteArgs, { models }) => {
+  note: async (_, args, { models }) => {
     return await models.Note.findById(args.id);
   },
 };
