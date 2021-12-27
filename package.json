@@ -43,6 +43,8 @@
   "devDependencies": {
     "@commitlint/cli": "15.0.0",
     "@commitlint/config-conventional": "15.0.0",
+    "@graphql-codegen/cli": "2.3.0",
+    "@graphql-codegen/typescript": "2.4.1",
     "@types/micro-cors": "0.1.2",
     "@types/mongoose": "5.11.97",
     "@types/node": "16.11.17",
