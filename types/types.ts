@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import {
   GraphQLResolveInfo,
   GraphQLScalarType,
@@ -31,6 +30,8 @@ export type Scalars = {
 export type Mutation = {
   deleteNote: Scalars['Boolean'];
   newNote?: Maybe<Note>;
+  signIn: Scalars['String'];
+  signUp: Scalars['String'];
   updateNote: Note;
 };
 
@@ -40,6 +41,18 @@ export type MutationDeleteNoteArgs = {
 
 export type MutationNewNoteArgs = {
   content: Scalars['String'];
+};
+
+export type MutationSignInArgs = {
+  email?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  username?: InputMaybe<Scalars['String']>;
+};
+
+export type MutationSignUpArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type MutationUpdateNoteArgs = {
@@ -63,6 +76,14 @@ export type Query = {
 
 export type QueryNoteArgs = {
   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type User = {
+  avatar?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  id: Scalars['ID'];
+  notes: Array<Note>;
+  username: Scalars['String'];
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -179,6 +200,7 @@ export type ResolversTypes = {
   Note: ResolverTypeWrapper<Note>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  User: ResolverTypeWrapper<User>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -190,6 +212,7 @@ export type ResolversParentTypes = {
   Note: Note;
   Query: {};
   String: Scalars['String'];
+  User: User;
 };
 
 export interface DateTimeScalarConfig
@@ -212,6 +235,18 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationNewNoteArgs, 'content'>
+  >;
+  signIn?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignInArgs, 'password'>
+  >;
+  signUp?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>
   >;
   updateNote?: Resolver<
     ResolversTypes['Note'],
@@ -251,9 +286,22 @@ export type QueryResolvers<
   >;
 };
 
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User'],
+> = {
+  avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  notes?: Resolver<Array<ResolversTypes['Note']>, ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Note?: NoteResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 };

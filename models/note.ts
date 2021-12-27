@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 // Define the note's database schema
-const noteSchema = new mongoose.Schema(
+const NoteSchema = new mongoose.Schema(
   {
     content: { type: String, required: true },
     author: {
@@ -12,6 +12,6 @@ const noteSchema = new mongoose.Schema(
 );
 
 // Define the 'Note' model with the schema
-const Note = mongoose.models.Note || mongoose.model(`Note`, noteSchema);
+const Note = mongoose.models.Note || mongoose.model(`Note`, NoteSchema);
 
 export default Note;
