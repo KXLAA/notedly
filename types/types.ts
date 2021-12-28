@@ -75,10 +75,17 @@ export type Note = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type NoteFeed = {
+  cursor: Scalars['String'];
+  hasNextPage: Scalars['Boolean'];
+  notes: Array<Maybe<Note>>;
+};
+
 export type Query = {
   hello?: Maybe<Scalars['String']>;
   me: User;
   note?: Maybe<Note>;
+  noteFeed?: Maybe<NoteFeed>;
   notes?: Maybe<Array<Maybe<Note>>>;
   user?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
@@ -86,6 +93,10 @@ export type Query = {
 
 export type QueryNoteArgs = {
   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryNoteFeedArgs = {
+  cursor?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryUserArgs = {
@@ -214,6 +225,7 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Note: ResolverTypeWrapper<Note>;
+  NoteFeed: ResolverTypeWrapper<NoteFeed>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
@@ -227,6 +239,7 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Mutation: {};
   Note: Note;
+  NoteFeed: NoteFeed;
   Query: {};
   String: Scalars['String'];
   User: User;
@@ -297,6 +310,20 @@ export type NoteResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type NoteFeedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['NoteFeed'] = ResolversParentTypes['NoteFeed'],
+> = {
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  notes?: Resolver<
+    Array<Maybe<ResolversTypes['Note']>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
@@ -308,6 +335,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryNoteArgs, never>
+  >;
+  noteFeed?: Resolver<
+    Maybe<ResolversTypes['NoteFeed']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryNoteFeedArgs, never>
   >;
   notes?: Resolver<
     Maybe<Array<Maybe<ResolversTypes['Note']>>>,
@@ -344,6 +377,7 @@ export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Note?: NoteResolvers<ContextType>;
+  NoteFeed?: NoteFeedResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };

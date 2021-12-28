@@ -2,6 +2,15 @@ import { gql } from 'apollo-server-micro';
 
 const typeDefs = gql`
   scalar DateTime
+  type Query {
+    hello: String
+    notes: [Note]
+    note(id: ID): Note
+    user(username: String): User
+    users: [User]
+    me: User!
+    noteFeed(cursor: String): NoteFeed
+  }
 
   type Note {
     id: ID
@@ -22,13 +31,11 @@ const typeDefs = gql`
     favorites: [Note!]!
   }
 
-  type Query {
-    hello: String
-    notes: [Note]
-    note(id: ID): Note
-    user(username: String): User
-    users: [User]
-    me: User!
+  # Pagination
+  type NoteFeed {
+    notes: [Note]!
+    cursor: String!
+    hasNextPage: Boolean!
   }
 
   type Mutation {
