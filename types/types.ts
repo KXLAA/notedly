@@ -32,6 +32,7 @@ export type Mutation = {
   newNote?: Maybe<Note>;
   signIn: Scalars['String'];
   signUp: Scalars['String'];
+  toggleFavorite: Note;
   updateNote: Note;
 };
 
@@ -55,32 +56,46 @@ export type MutationSignUpArgs = {
   username: Scalars['String'];
 };
 
+export type MutationToggleFavoriteArgs = {
+  id: Scalars['ID'];
+};
+
 export type MutationUpdateNoteArgs = {
   content: Scalars['String'];
   id: Scalars['ID'];
 };
 
 export type Note = {
-  author?: Maybe<Scalars['String']>;
+  author: User;
   content?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
+  favoriteCount: Scalars['Int'];
+  favoritedBy?: Maybe<Array<User>>;
   id?: Maybe<Scalars['ID']>;
   updatedAt: Scalars['DateTime'];
 };
 
 export type Query = {
   hello?: Maybe<Scalars['String']>;
+  me: User;
   note?: Maybe<Note>;
   notes?: Maybe<Array<Maybe<Note>>>;
+  user?: Maybe<User>;
+  users?: Maybe<Array<Maybe<User>>>;
 };
 
 export type QueryNoteArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+export type QueryUserArgs = {
+  username?: InputMaybe<Scalars['String']>;
+};
+
 export type User = {
   avatar?: Maybe<Scalars['String']>;
   email: Scalars['String'];
+  favorites: Array<Note>;
   id: Scalars['ID'];
   notes: Array<Note>;
   username: Scalars['String'];
@@ -196,6 +211,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Note: ResolverTypeWrapper<Note>;
   Query: ResolverTypeWrapper<{}>;
@@ -208,6 +224,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   DateTime: Scalars['DateTime'];
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Mutation: {};
   Note: Note;
   Query: {};
@@ -248,6 +265,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>
   >;
+  toggleFavorite?: Resolver<
+    ResolversTypes['Note'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationToggleFavoriteArgs, 'id'>
+  >;
   updateNote?: Resolver<
     ResolversTypes['Note'],
     ParentType,
@@ -260,9 +283,15 @@ export type NoteResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Note'] = ResolversParentTypes['Note'],
 > = {
-  author?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  favoriteCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  favoritedBy?: Resolver<
+    Maybe<Array<ResolversTypes['User']>>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -273,6 +302,7 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
   hello?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   note?: Resolver<
     Maybe<ResolversTypes['Note']>,
     ParentType,
@@ -284,6 +314,17 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  user?: Resolver<
+    Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserArgs, never>
+  >;
+  users?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['User']>>>,
+    ParentType,
+    ContextType
+  >;
 };
 
 export type UserResolvers<
@@ -292,6 +333,7 @@ export type UserResolvers<
 > = {
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  favorites?: Resolver<Array<ResolversTypes['Note']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   notes?: Resolver<Array<ResolversTypes['Note']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

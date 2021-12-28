@@ -2,6 +2,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { AuthenticationError, ForbiddenError } from 'apollo-server-micro';
+import mongoose from 'mongoose';
 import { MutationResolvers } from '../../types/types';
 
 const getAvatar = () => {
@@ -11,23 +12,56 @@ const getAvatar = () => {
 
 // CRUD
 const Mutation: MutationResolvers = {
-  newNote: async (_, args, { models }) => {
+  newNote: async (_, args, { models, user }) => {
+    // if there is no user on the context, throw an authentication error
+    if (!user) {
+      throw new AuthenticationError(`You must be signed in to create a note`);
+    }
     return await models.Note.create({
       content: args.content,
-      author: `Adam Scott`,
+      //reference the author's mongo id
+      author: new mongoose.Types.ObjectId(user.id),
     });
   },
 
-  deleteNote: async (_, { id }, { models }) => {
+  deleteNote: async (_, { id }, { models, user }) => {
+    // if not a user, throw an Authentication Error
+    if (!user) {
+      throw new AuthenticationError(`You must be signed in to delete a note`);
+    }
+
+    // find the note
+    const note = await models.Note.findById(id);
+
+    // if the note owner and current user don't match, throw a forbidden error
+    if (note && String(note.author) !== user.id) {
+      throw new ForbiddenError(`You don't have permissions to delete the note`);
+    }
+
     try {
-      await models.Note.findOneAndRemove({ _id: id });
+      // if everything checks out, remove the note
+      await note.remove();
       return true;
     } catch (error) {
       return false;
     }
   },
 
-  updateNote: async (_, { content, id }, { models }) => {
+  updateNote: async (_, { content, id }, { models, user }) => {
+    // if not a user, throw an Authentication Error
+    if (!user) {
+      throw new AuthenticationError(`You must be signed in to update a note`);
+    }
+
+    // find the note
+    const note = await models.Note.findById(id);
+
+    // if the note owner and current user don't match, throw a forbidden error
+    if (note && String(note.author) !== user.id) {
+      throw new ForbiddenError(`You don't have permissions to update the note`);
+    }
+
+    // Update the note in the db and return the updated note
     return await models.Note.findOneAndUpdate(
       {
         _id: id,
@@ -41,6 +75,48 @@ const Mutation: MutationResolvers = {
         new: true,
       },
     );
+  },
+
+  toggleFavorite: async (_, { id }, { models, user }) => {
+    if (!user) {
+      throw new AuthenticationError(`You must be signed in to update a note`);
+    }
+
+    // check to see if the user has already favorited the note
+    const noteCheck = await models.Note.findById(id);
+    const hasUser = noteCheck.favoritedBy.indexOf(user.id);
+
+    // if the user exists in the list
+    // pull them from the list and reduce the favoriteCount by 1
+    if (hasUser >= 0) {
+      return await models.Note.findByIdAndUpdate(
+        id,
+        {
+          $pull: {
+            favoritedBy: new mongoose.Types.ObjectId(user.id),
+          },
+          $inc: {
+            favoriteCount: -1,
+          },
+        },
+        { new: true },
+      );
+    } else {
+      // if the user doesn't exist in the list
+      // add them to the list and increment the favoriteCount by 1
+      return await models.Note.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            favoritedBy: new mongoose.Types.ObjectId(user.id),
+          },
+          $inc: {
+            favoriteCount: 1,
+          },
+        },
+        { new: true },
+      );
+    }
   },
 
   // Authentication
