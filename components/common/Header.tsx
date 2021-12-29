@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from './Layout';
 import Link from 'next/link';
+import { ButtonOne } from './Button';
 
 const Container = styled.header`
   border-bottom: solid 2px #181818;
@@ -17,13 +18,31 @@ const Container = styled.header`
   }
 `;
 
+const NavItems = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  gap: 24px;
+`;
+
 const Header = () => {
   return (
     <Container>
       <Layout>
-        <Link href={`/`} passHref>
-          <h1>Notedly</h1>
-        </Link>
+        <NavItems>
+          <Link href={`/`} passHref>
+            <h1>Notedly</h1>
+          </Link>
+
+          <BtnContainer>
+            <ButtonOne>Sign in</ButtonOne>
+            <ButtonOne>Sign Up</ButtonOne>
+          </BtnContainer>
+        </NavItems>
       </Layout>
     </Container>
   );

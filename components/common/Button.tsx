@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const ButtonBase = styled.button`
   display: inline;
-  padding: 12px;
+  padding: 10px 20px;
   border-radius: 100px;
   transition: all 0.3s ease;
   color: #101010;
