@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const LayoutStyled = styled.main`
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 260px 1fr;
   grid-template-areas: 'side main';
   align-items: start;
 `;
@@ -10,7 +10,7 @@ const LayoutStyled = styled.main`
 const SideContainer = styled.div`
   grid-area: side;
   border-right: solid 2px #181818;
-  height: 100vh;
+  height: 100%;
 `;
 
 const MainContainer = styled.div`

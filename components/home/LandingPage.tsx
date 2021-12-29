@@ -1,21 +1,28 @@
-import Layout from 'components/common/Layout';
 import React from 'react';
 import { GridItemSide, GridItemMain, Grid } from './Layout';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { ButtonOne } from 'components/common/Button';
+import Notes from './Notes';
 
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   padding-top: 24px;
   padding-right: 24px;
-  gap: 24px;
+  gap: 32px;
   justify-content: center;
 
   a {
     font-size: 2rem;
+    transition: all 0.3s ease;
     font-weight: 600;
+
+    &:hover {
+      background: #222222;
+      border-radius: 24px;
+      width: fit-content;
+    }
   }
 `;
 
@@ -25,9 +32,9 @@ const Main = styled.main`
   padding: 1.5rem;
 `;
 
-const LandingPage = () => {
+const LandingPage = ({ notes }) => {
   return (
-    <Layout>
+    <>
       <Grid>
         <GridItemSide>
           <Nav>
@@ -36,7 +43,7 @@ const LandingPage = () => {
             </Link>
 
             <Link href={`/`}>
-              <a>📒 My Notes</a>
+              <a>📕 My Notes</a>
             </Link>
 
             <Link href={`/`}>
@@ -48,13 +55,11 @@ const LandingPage = () => {
         </GridItemSide>
         <GridItemMain>
           <Main>
-            <h1>This is the main Content</h1>
-            <h1>Test</h1>
-            <h1>Test</h1>
+            <Notes notes={notes} />
           </Main>
         </GridItemMain>
       </Grid>
-    </Layout>
+    </>
   );
 };
 
