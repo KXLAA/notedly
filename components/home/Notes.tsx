@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { format } from 'fecha';
 import Image from 'next/image';
 import { FaRegHeart } from 'react-icons/fa';
+import { NoteProps } from 'components/types/types';
 
 const Container = styled.section`
   display: flex;
@@ -42,7 +43,7 @@ const LikeBtn = styled(FaRegHeart)`
   cursor: pointer;
 `;
 
-const Notes = ({ notes }) => {
+const Notes = ({ notes }: NoteProps) => {
   return (
     <Container>
       {notes.map(({ author, content, favoriteCount, createdAt, id }) => (

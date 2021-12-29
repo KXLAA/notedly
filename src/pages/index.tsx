@@ -1,6 +1,5 @@
 import { useQuery, gql } from '@apollo/client';
 import Header from 'components/common/Header';
-import Layout from 'components/common/Layout';
 import LandingPage from 'components/home/LandingPage';
 import Head from 'next/head';
 
@@ -47,9 +46,8 @@ export default function Home() {
       </Head>
       <>
         <Header />
-        <Layout>
-          <LandingPage notes={notes} />
-        </Layout>
+
+        <LandingPage notes={notes} />
       </>
     </>
   );

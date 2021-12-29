@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { ButtonOne } from 'components/common/Button';
 import Notes from './Notes';
+import { NoteProps } from 'components/types/types';
+import Layout from 'components/common/Layout';
 
 const Nav = styled.nav`
   display: flex;
@@ -32,9 +34,9 @@ const Main = styled.main`
   padding: 1.5rem;
 `;
 
-const LandingPage = ({ notes }) => {
+const LandingPage = ({ notes }: NoteProps) => {
   return (
-    <>
+    <Layout>
       <Grid>
         <GridItemSide>
           <Nav>
@@ -59,7 +61,7 @@ const LandingPage = ({ notes }) => {
           </Main>
         </GridItemMain>
       </Grid>
-    </>
+    </Layout>
   );
 };
 
