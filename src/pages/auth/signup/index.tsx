@@ -20,6 +20,7 @@ const SIGN_UP_USER = gql`
 `;
 
 const SignUp = () => {
+  const client = useApolloClient();
   const router = useRouter();
   const [values, setValues] = useState({
     fullName: ``,
@@ -30,10 +31,20 @@ const SignUp = () => {
 
   const [signUp, { loading, error }] = useMutation(SIGN_UP_USER, {
     onCompleted: (data) => {
-      // console.log the JSON Web Token when the mutation is complete
-      console.log(data.signUp);
       // store the JWT in localStorage
       window.localStorage.setItem(`token`, data.signUp);
+      // update the local cache
+      client.writeQuery({
+        query: gql`
+          query getAuth {
+            isLoggedIn
+          }
+        `,
+        data: {
+          isLoggedIn: true,
+        },
+      });
+      // redirect the user to the homepage
       router.push(`/`);
     },
   });
@@ -44,6 +55,9 @@ const SignUp = () => {
       [event.target.name]: event.target.value,
     });
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
 
   return (
     <Layout>

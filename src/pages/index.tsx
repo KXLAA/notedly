@@ -29,7 +29,10 @@ export default function Home() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
+
   const { notes } = data.noteFeed;
+
+  console.log(error);
 
   return (
     <>

@@ -1,4 +1,9 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  gql,
+} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
@@ -17,9 +22,38 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const cache = new InMemoryCache();
+
 const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: cache,
+  resolvers: {},
 });
+
+cache.writeQuery({
+  query: gql`
+    query getAuth {
+      isLoggedIn
+    }
+  `,
+  data: {
+    isLoggedIn:
+      typeof window !== `undefined` && !!localStorage.getItem(`token`),
+  },
+});
+
+apolloClient.onResetStore(async () =>
+  cache.writeQuery({
+    query: gql`
+      query getAuth {
+        isLoggedIn
+      }
+    `,
+    data: {
+      isLoggedIn:
+        typeof window !== `undefined` && !!localStorage.getItem(`token`),
+    },
+  }),
+);
 
 export default apolloClient;

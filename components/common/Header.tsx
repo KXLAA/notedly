@@ -1,8 +1,16 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { useQuery, gql } from '@apollo/client';
 import Layout from './Layout';
 import Link from 'next/link';
 import { ButtonTwo } from './Button';
+
+const IS_LOGGED_IN = gql`
+  {
+    isLoggedIn @client
+  }
+`;
 
 const Container = styled.header`
   z-index: 1;
@@ -34,6 +42,25 @@ const BtnContainer = styled.div`
 `;
 
 const Header = () => {
+  const router = useRouter();
+  const { data, client } = useQuery(IS_LOGGED_IN);
+
+  const signOut = () => {
+    localStorage.removeItem(`token`);
+    client.resetStore();
+    client.writeQuery({
+      query: gql`
+        query getAuth {
+          isLoggedIn
+        }
+      `,
+      data: {
+        isLoggedIn: false,
+      },
+    });
+    router.push(`/`);
+  };
+
   return (
     <Container>
       <Layout>
@@ -43,13 +70,19 @@ const Header = () => {
           </Link>
 
           <BtnContainer>
-            <Link href={`/auth/signin`} passHref>
-              <ButtonTwo>Sign in</ButtonTwo>
-            </Link>
+            {data.isLoggedIn ? (
+              <ButtonTwo onClick={signOut}>Sign Out</ButtonTwo>
+            ) : (
+              <>
+                <Link href={`/auth/signin`} passHref>
+                  <ButtonTwo>Sign in</ButtonTwo>
+                </Link>
 
-            <Link href={`/auth/signup`} passHref>
-              <ButtonTwo>Sign Up</ButtonTwo>
-            </Link>
+                <Link href={`/auth/signup`} passHref>
+                  <ButtonTwo>Sign Up</ButtonTwo>
+                </Link>
+              </>
+            )}
           </BtnContainer>
         </NavItems>
       </Layout>
