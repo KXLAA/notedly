@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Layout from 'components/common/Layout';
 import { useMutation, useApolloClient, gql } from '@apollo/client';
 import {
@@ -19,6 +20,7 @@ const SIGN_UP_USER = gql`
 `;
 
 const SignUp = () => {
+  const router = useRouter();
   const [values, setValues] = useState({
     fullName: ``,
     username: ``,
@@ -32,6 +34,7 @@ const SignUp = () => {
       console.log(data.signUp);
       // store the JWT in localStorage
       window.localStorage.setItem(`token`, data.signUp);
+      router.push(`/`);
     },
   });
 

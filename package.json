@@ -46,6 +46,7 @@
     "sass": "1.45.1",
     "styled-components": "5.3.3"
   },
+  "proxy": "http://localhost:3000",
   "devDependencies": {
     "@commitlint/cli": "15.0.0",
     "@commitlint/config-conventional": "15.0.0",

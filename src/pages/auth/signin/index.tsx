@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useMutation, useApolloClient, gql } from '@apollo/client';
 import Layout from 'components/common/Layout';
 import {
@@ -19,6 +20,7 @@ const SIGN_IN_USER = gql`
 `;
 
 const SignIn = () => {
+  const router = useRouter();
   const [values, setValues] = useState({
     username: ``,
     password: ``,
@@ -35,6 +37,7 @@ const SignIn = () => {
     onCompleted: (data) => {
       console.log(data);
       window.localStorage.setItem(`token`, data.signIn);
+      router.push(`/`);
     },
   });
 
