@@ -2,9 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from './Layout';
 import Link from 'next/link';
-import { ButtonOne } from './Button';
+import { ButtonTwo } from './Button';
 
 const Container = styled.header`
+  z-index: 1;
+  position: fixed;
+  width: 100%;
+  background-color: #151515;
   border-bottom: solid 2px #181818;
   padding: 1.5rem 0rem;
   /* -webkit-box-shadow: 3px 4px 15px -8px rgba(0, 0, 0, 0.71);
@@ -35,12 +39,17 @@ const Header = () => {
       <Layout>
         <NavItems>
           <Link href={`/`} passHref>
-            <h1>Notedly</h1>
+            <h1>notedly</h1>
           </Link>
 
           <BtnContainer>
-            <ButtonOne>Sign in</ButtonOne>
-            <ButtonOne>Sign Up</ButtonOne>
+            <Link href={`/auth/signin`} passHref>
+              <ButtonTwo>Sign in</ButtonTwo>
+            </Link>
+
+            <Link href={`/auth/signup`} passHref>
+              <ButtonTwo>Sign Up</ButtonTwo>
+            </Link>
           </BtnContainer>
         </NavItems>
       </Layout>
