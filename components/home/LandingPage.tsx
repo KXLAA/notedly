@@ -44,11 +44,11 @@ const LandingPage = ({ notes }: NoteProps) => {
               <a>🏚 Home</a>
             </Link>
 
-            <Link href={`/`}>
+            <Link href={`/mynotes`}>
               <a>📕 My Notes</a>
             </Link>
 
-            <Link href={`/`}>
+            <Link href={`/favorites`}>
               <a>💖 Favorites</a>
             </Link>
 

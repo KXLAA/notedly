@@ -37,7 +37,7 @@ const SignIn = () => {
   const [signIn, { loading, error }] = useMutation(SIGN_IN_USER, {
     onCompleted: (data) => {
       // store the JWT in localStorage
-      window.localStorage.setItem(`token`, data.signUp);
+      localStorage.setItem(`token`, data.signIn);
       // update the local cache
       client.writeQuery({
         query: gql`

@@ -32,7 +32,7 @@ export default function Home() {
 
   const { notes } = data.noteFeed;
 
-  console.log(error);
+  console.log(data);
 
   return (
     <>
