@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GridItemSide, GridItemMain, Grid } from './Layout';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -6,6 +6,8 @@ import { ButtonOne } from 'components/common/Button';
 import Notes from './Notes';
 import { NoteProps } from 'components/types/types';
 import Layout from 'components/common/Layout';
+import NewNote from './NewNote';
+import EditNote from './EditNote';
 
 const Nav = styled.nav`
   display: flex;
@@ -35,6 +37,17 @@ const Main = styled.main`
 `;
 
 const LandingPage = ({ notes }: NoteProps) => {
+  const [showNew, setShowNew] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+
+  const toggleNewNote = () => {
+    setShowNew(!showNew);
+  };
+
+  const toggleEditNote = () => {
+    setShowEdit(!showEdit);
+  };
+
   return (
     <Layout>
       <Grid>
@@ -52,11 +65,23 @@ const LandingPage = ({ notes }: NoteProps) => {
               <a>💖 Favorites</a>
             </Link>
 
-            <ButtonOne>Add Note</ButtonOne>
+            <ButtonOne onClick={toggleNewNote}>Add Note</ButtonOne>
           </Nav>
         </GridItemSide>
         <GridItemMain>
           <Main>
+            {showEdit && (
+              <EditNote
+                toggleEditNote={toggleEditNote}
+                toggleNewNote={toggleNewNote}
+              />
+            )}
+            {showNew && (
+              <NewNote
+                toggleNewNote={toggleNewNote}
+                toggleEditNote={toggleEditNote}
+              />
+            )}
             <Notes notes={notes} />
           </Main>
         </GridItemMain>
