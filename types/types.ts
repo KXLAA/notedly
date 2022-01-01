@@ -42,6 +42,7 @@ export type MutationDeleteNoteArgs = {
 
 export type MutationNewNoteArgs = {
   content: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type MutationSignInArgs = {
@@ -63,6 +64,7 @@ export type MutationToggleFavoriteArgs = {
 export type MutationUpdateNoteArgs = {
   content: Scalars['String'];
   id: Scalars['ID'];
+  title: Scalars['String'];
 };
 
 export type Note = {
@@ -72,6 +74,7 @@ export type Note = {
   favoriteCount: Scalars['Int'];
   favoritedBy?: Maybe<Array<User>>;
   id?: Maybe<Scalars['ID']>;
+  title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -264,7 +267,7 @@ export type MutationResolvers<
     Maybe<ResolversTypes['Note']>,
     ParentType,
     ContextType,
-    RequireFields<MutationNewNoteArgs, 'content'>
+    RequireFields<MutationNewNoteArgs, 'content' | 'title'>
   >;
   signIn?: Resolver<
     ResolversTypes['String'],
@@ -288,7 +291,7 @@ export type MutationResolvers<
     ResolversTypes['Note'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateNoteArgs, 'content' | 'id'>
+    RequireFields<MutationUpdateNoteArgs, 'content' | 'id' | 'title'>
   >;
 };
 
@@ -306,6 +309,7 @@ export type NoteResolvers<
     ContextType
   >;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

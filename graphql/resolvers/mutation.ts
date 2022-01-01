@@ -19,6 +19,7 @@ const Mutation: MutationResolvers = {
     }
     return await models.Note.create({
       content: args.content,
+      title: args.title,
       //reference the author's mongo id
       author: new mongoose.Types.ObjectId(user.id),
     });

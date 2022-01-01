@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 // Define the note's database schema
 const NoteSchema = new mongoose.Schema(
   {
+    title: { type: String, required: true },
     content: { type: String, required: true },
     author: {
       type: mongoose.Schema.Types.ObjectId,

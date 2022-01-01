@@ -14,6 +14,7 @@ const typeDefs = gql`
 
   type Note {
     id: ID
+    title: String
     content: String
     author: User!
     createdAt: DateTime!
@@ -40,8 +41,8 @@ const typeDefs = gql`
 
   type Mutation {
     # CRUD
-    newNote(content: String!): Note
-    updateNote(id: ID!, content: String!): Note!
+    newNote(content: String!, title: String!): Note
+    updateNote(id: ID!, content: String!, title: String!): Note!
     deleteNote(id: ID!): Boolean!
     toggleFavorite(id: ID!): Note!
 
