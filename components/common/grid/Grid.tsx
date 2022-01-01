@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import SideBar from './SideBar';
+import Layout from './Layout';
+import Header from '../Header';
 
 const LayoutStyled = styled.main`
   display: grid;
@@ -26,17 +29,18 @@ const MainContainer = styled.div`
 export const Grid = ({
   children,
 }: React.PropsWithChildren<Record<never, any>>) => {
-  return <LayoutStyled>{children}</LayoutStyled>;
-};
+  return (
+    <>
+      <Header />
 
-export const GridItemSide = ({
-  children,
-}: React.PropsWithChildren<Record<never, any>>) => {
-  return <SideContainer>{children}</SideContainer>;
-};
-
-export const GridItemMain = ({
-  children,
-}: React.PropsWithChildren<Record<never, any>>) => {
-  return <MainContainer>{children}</MainContainer>;
+      <Layout>
+        <LayoutStyled>
+          <SideContainer>
+            <SideBar />
+          </SideContainer>
+          <MainContainer>{children}</MainContainer>
+        </LayoutStyled>
+      </Layout>
+    </>
+  );
 };

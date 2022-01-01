@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 interface Author {
   avatar: string;
   id: string;
@@ -6,12 +8,25 @@ interface Author {
 
 export interface Notes {
   author: Author;
+  title: string;
   content: string;
   createdAt: string;
   favoriteCount: number;
   id: string;
 }
 
-export interface NoteProps {
-  notes: Notes[];
+export interface NotesProps {
+  notes?: Notes[];
+  setNoteId?: Dispatch<SetStateAction<string>>;
+}
+
+export interface Note {
+  note: {
+    author: Author;
+    title: string;
+    content: string;
+    createdAt: string;
+    favoriteCount: number;
+    id: string;
+  };
 }

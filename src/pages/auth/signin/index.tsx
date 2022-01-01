@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMutation, useApolloClient, gql } from '@apollo/client';
-import Layout from 'components/common/Layout';
+import Layout from 'components/common/grid/Layout';
 import {
   Container,
   Form,

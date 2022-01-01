@@ -1,7 +1,7 @@
 import { useQuery, gql } from '@apollo/client';
-import Header from 'components/common/Header';
 import LandingPage from 'components/home/LandingPage';
 import Head from 'next/head';
+import { Grid } from 'components/common/grid/Grid';
 
 // GraphQL query to get all Notes
 const GET_NOTES = gql`
@@ -13,6 +13,7 @@ const GET_NOTES = gql`
         id
         createdAt
         content
+        title
         favoriteCount
         author {
           username
@@ -32,8 +33,6 @@ export default function Home() {
 
   const { notes } = data.noteFeed;
 
-  console.log(data);
-
   return (
     <>
       <Head>
@@ -44,9 +43,7 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <>
-        <Header />
-
+      <Grid>
         <LandingPage notes={notes} />
 
         {data.noteFeed.hasNextPage && (
@@ -75,7 +72,7 @@ export default function Home() {
             Load More
           </button>
         )}
-      </>
+      </Grid>
     </>
   );
 }

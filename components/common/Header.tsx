@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { useQuery, gql } from '@apollo/client';
-import Layout from './Layout';
+import Layout from './grid/Layout';
 import Link from 'next/link';
 import { ButtonTwo } from './Button';
 
